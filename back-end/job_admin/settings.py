@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.01']
 
 
 # Application definition
@@ -82,6 +82,8 @@ WSGI_APPLICATION = 'job_admin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
 
     # 'default': {
@@ -90,15 +92,19 @@ DATABASES = {
     # }
 
 
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': config('DATABASE_NAME'),
+    #     'USER': config('DATABASE_USER'),
+    #     'PASSWORD': config('DATABASE_PASSWORD'),
+    #     'HOST': config('DATABASE_HOST'),
+    #     'PORT': config('DATABASE_PORT'),
+    # }
+
+    #Product Database
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
+
 
 
 
@@ -162,6 +168,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://your-frontend-name.vercel.app",
 ]
 
 from datetime import timedelta
