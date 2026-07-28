@@ -177,7 +177,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://your-frontend-name.vercel.app",
+    "https://job-board-pearl-three.vercel.app",
 ]
 
 from datetime import timedelta
