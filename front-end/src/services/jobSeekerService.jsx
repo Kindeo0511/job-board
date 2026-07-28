@@ -1,8 +1,8 @@
 import { authFetch } from "./authService";
-const API_URL = "http://127.0.0.1:8000/api/";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function MyProfile() {
-  const response = await authFetch(`${API_URL}job-seeker/profile/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/profile/`, {
     method: "GET",
   });
 
@@ -16,11 +16,14 @@ export async function MyProfile() {
 }
 
 export async function UpdateBasicInfo(payload) {
-  const response = await authFetch(`${API_URL}job-seeker/update/basic-info/`, {
-    method: "PUT",
+  const response = await authFetch(
+    `${API_URL}api/job-seeker/update/basic-info/`,
+    {
+      method: "PUT",
 
-    body: JSON.stringify(payload),
-  });
+      body: JSON.stringify(payload),
+    },
+  );
 
   const data = await response.json();
 
@@ -32,7 +35,7 @@ export async function UpdateBasicInfo(payload) {
 }
 export async function UpdateContactInfo(payload) {
   const response = await authFetch(
-    `${API_URL}job-seeker/update/contact-info/`,
+    `${API_URL}api/job-seeker/update/contact-info/`,
     {
       method: "PUT",
 
@@ -49,7 +52,7 @@ export async function UpdateContactInfo(payload) {
   return data;
 }
 export async function UpdateAboutInfo(payload) {
-  const response = await authFetch(`${API_URL}job-seeker/update/about/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/update/about/`, {
     method: "PUT",
 
     body: JSON.stringify(payload),
@@ -64,7 +67,7 @@ export async function UpdateAboutInfo(payload) {
   return data;
 }
 export async function UpdateJobSeekerProfile(payload) {
-  const response = await authFetch(`${API_URL}job-seeker/update/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/update/`, {
     method: "PATCH",
 
     body: JSON.stringify(payload),
@@ -80,7 +83,7 @@ export async function UpdateJobSeekerProfile(payload) {
 }
 
 export async function UpdateJobSeekerPassword(password) {
-  const response = await authFetch(`${API_URL}account/change-password/`, {
+  const response = await authFetch(`${API_URL}api/account/change-password/`, {
     method: "PUT",
     body: JSON.stringify(password),
   });
@@ -94,10 +97,13 @@ export async function UpdateJobSeekerPassword(password) {
 }
 
 export async function SendResumeToEmployer(payload, id) {
-  const response = await authFetch(`${API_URL}job-application/${id}/apply/`, {
-    method: "POST",
-    body: payload,
-  });
+  const response = await authFetch(
+    `${API_URL}api/job-application/${id}/apply/`,
+    {
+      method: "POST",
+      body: payload,
+    },
+  );
 
   const data = await response.json();
 
@@ -108,7 +114,7 @@ export async function SendResumeToEmployer(payload, id) {
   return data;
 }
 export async function UploadPhotoJobSeeker(payload) {
-  const response = await authFetch(`${API_URL}job-seeker/upload/photo/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/upload/photo/`, {
     method: "PATCH",
     body: payload,
   });
@@ -124,7 +130,7 @@ export async function UploadPhotoJobSeeker(payload) {
   return data;
 }
 export async function UpdateResume(payload) {
-  const response = await authFetch(`${API_URL}job-seeker/upload/resume/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/upload/resume/`, {
     method: "PUT",
     body: payload,
   });
@@ -139,7 +145,7 @@ export async function UpdateResume(payload) {
 }
 
 export async function GetResume() {
-  const response = await authFetch(`${API_URL}job-seeker/my/resume/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/my/resume/`, {
     method: "GET",
   });
 
@@ -153,7 +159,7 @@ export async function GetResume() {
 }
 
 export async function RemoveResume() {
-  const response = await authFetch(`${API_URL}job-seeker/delete/resume/`, {
+  const response = await authFetch(`${API_URL}api/job-seeker/delete/resume/`, {
     method: "DELETE",
   });
 
@@ -178,9 +184,12 @@ export async function MyJobApplications(status, page) {
   if (page !== null) params.append("page", page);
   const query = params.toString() ? `?${params.toString()}` : "";
 
-  const response = await authFetch(`${API_URL}my-job-application/${query}`, {
-    method: "GET",
-  });
+  const response = await authFetch(
+    `${API_URL}api/my-job-application/${query}`,
+    {
+      method: "GET",
+    },
+  );
 
   const data = await response.json();
 
@@ -192,7 +201,7 @@ export async function MyJobApplications(status, page) {
 }
 
 export async function AddWorkExperience(payload) {
-  const response = await authFetch(`${API_URL}add/experience/`, {
+  const response = await authFetch(`${API_URL}api/add/experience/`, {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -206,7 +215,7 @@ export async function AddWorkExperience(payload) {
   return data;
 }
 export async function UpdateWorkExperience(payload, id) {
-  const response = await authFetch(`${API_URL}update/experience/${id}/`, {
+  const response = await authFetch(`${API_URL}api/update/experience/${id}/`, {
     method: "PUT",
     body: JSON.stringify(payload),
   });
@@ -220,7 +229,7 @@ export async function UpdateWorkExperience(payload, id) {
   return data;
 }
 export async function DeleteWorkExperience(id) {
-  const response = await authFetch(`${API_URL}delete/experience/${id}/`, {
+  const response = await authFetch(`${API_URL}api/delete/experience/${id}/`, {
     method: "DELETE",
   });
 
@@ -242,7 +251,7 @@ export async function DeleteWorkExperience(id) {
 
 // EDUCATION
 export async function AddEducation(payload) {
-  const response = await authFetch(`${API_URL}add/education/`, {
+  const response = await authFetch(`${API_URL}api/add/education/`, {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -256,7 +265,7 @@ export async function AddEducation(payload) {
 }
 
 export async function UpdateEducation(payload, id) {
-  const response = await authFetch(`${API_URL}update/education/${id}/`, {
+  const response = await authFetch(`${API_URL}api/update/education/${id}/`, {
     method: "PUT",
     body: JSON.stringify(payload),
   });
@@ -270,7 +279,7 @@ export async function UpdateEducation(payload, id) {
   return data;
 }
 export async function DeleteEducation(id) {
-  const response = await authFetch(`${API_URL}delete/education/${id}/`, {
+  const response = await authFetch(`${API_URL}api/delete/education/${id}/`, {
     method: "DELETE",
   });
 
@@ -288,7 +297,7 @@ export async function DeleteEducation(id) {
 
 // SKILL
 export async function AddSkill(payload) {
-  const response = await authFetch(`${API_URL}add/skill/`, {
+  const response = await authFetch(`${API_URL}api/add/skill/`, {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -303,7 +312,7 @@ export async function AddSkill(payload) {
 }
 
 export async function DeleteSkill(id) {
-  const response = await authFetch(`${API_URL}delete/skill/${id}/`, {
+  const response = await authFetch(`${API_URL}api/delete/skill/${id}/`, {
     method: "DELETE",
   });
 
