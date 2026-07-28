@@ -1,6 +1,5 @@
 import { authFetch } from "./authService";
-
-const API_URL = "http://127.0.0.1:8000/api/";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function MyProfile() {
   const response = await authFetch(`${API_URL}employer/me/`, {
@@ -18,7 +17,7 @@ export async function MyProfile() {
 
 export async function UpdateEmployerCompanyProfile(payload) {
   const response = await authFetch(
-    `${API_URL}employer/update/company-profile/`,
+    `${API_URL}api/employer/update/company-profile/`,
     {
       method: "PUT",
 
@@ -36,7 +35,7 @@ export async function UpdateEmployerCompanyProfile(payload) {
 }
 export async function UpdateEmployerCompanyContact(payload) {
   const response = await authFetch(
-    `${API_URL}employer/update/company-contact/`,
+    `${API_URL}api/employer/update/company-contact/`,
     {
       method: "PUT",
 
@@ -53,7 +52,7 @@ export async function UpdateEmployerCompanyContact(payload) {
   return data;
 }
 export async function ChangePassword(payload) {
-  const response = await authFetch(`${API_URL}account/change-password/`, {
+  const response = await authFetch(`${API_URL}api/account/change-password/`, {
     method: "PUT",
     body: JSON.stringify(payload),
   });
@@ -67,7 +66,7 @@ export async function ChangePassword(payload) {
   return data;
 }
 export async function UploadPhoto(payload) {
-  const response = await authFetch(`${API_URL}employer/upload/photo/`, {
+  const response = await authFetch(`${API_URL}api/employer/upload/photo/`, {
     method: "PATCH",
     body: payload,
   });
@@ -84,7 +83,7 @@ export async function UploadPhoto(payload) {
   return data;
 }
 export async function countTotalJobAndActive() {
-  const response = await authFetch(`${API_URL}job/total/`, {
+  const response = await authFetch(`${API_URL}api/job/total/`, {
     method: "GET",
   });
   const data = await response.json();
@@ -97,7 +96,7 @@ export async function countTotalJobAndActive() {
 }
 
 export async function CountApplicants() {
-  const response = await authFetch(`${API_URL}job-application/total/`, {
+  const response = await authFetch(`${API_URL}api/job-application/total/`, {
     method: "GET",
   });
 
@@ -123,9 +122,12 @@ export async function GetEmployerApplicants(
 
   const query = params.toString() ? `?${params.toString()}` : "";
 
-  const response = await authFetch(`${API_URL}employer/applicants/${query}`, {
-    method: "GET",
-  });
+  const response = await authFetch(
+    `${API_URL}api/employer/applicants/${query}`,
+    {
+      method: "GET",
+    },
+  );
 
   const data = await response.json();
 
@@ -137,7 +139,7 @@ export async function GetEmployerApplicants(
 }
 
 export async function GetApplicantById(id) {
-  const response = await authFetch(`${API_URL}employer/applicant/${id}/`, {
+  const response = await authFetch(`${API_URL}api/employer/applicant/${id}/`, {
     method: "GET",
   });
 
@@ -151,10 +153,13 @@ export async function GetApplicantById(id) {
 }
 
 export async function UpdateApplicantStatus(payload, id) {
-  const response = await authFetch(`${API_URL}job-application/update/${id}/`, {
-    method: "PATCH",
-    body: JSON.stringify(payload),
-  });
+  const response = await authFetch(
+    `${API_URL}api/job-application/update/${id}/`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    },
+  );
 
   const data = await response.json();
 
