@@ -51,8 +51,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -143,6 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = "account.User"
 
@@ -157,6 +158,14 @@ REST_FRAMEWORK = {
     ),
 
 }
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -168,19 +177,18 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://your-frontend-name.vercel.app",
+    "https://job-board-pearl-three.vercel.app",
 ]
 
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    # Access token — short lived
+
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    
-    # Refresh token — long lived
+   
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     
-    "ROTATE_REFRESH_TOKENS": True,   # new refresh token on every refresh
-    # "BLACKLIST_AFTER_ROTATION": True, # old refresh token becomes invalid
+    "ROTATE_REFRESH_TOKENS": True,  
+
 }
 
