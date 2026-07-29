@@ -18,9 +18,9 @@ function Login() {
       const loggedInUser = await signIn(userName, password);
 
       if (loggedInUser.role === "EM") {
-        window.location.href = "/employer/homepage";
+        navigate("/employer/homepage");
       } else if (loggedInUser.role === "JS") {
-        window.location.href = "/";
+        navigate("/");
       } else {
         navigate("/");
       }
