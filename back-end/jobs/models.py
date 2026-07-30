@@ -31,14 +31,14 @@ class Qualification(models.Model):
     text = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.text
+        return f"{self.text}"
     
 class Benefit(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="benefits")
     text = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.text
+        return f"{self.text}"
 
 
 class JobApplication(models.Model):

@@ -34,8 +34,8 @@ class RegisterJobSeekerView(APIView):
         serializer = CreateJobSeekerSerializer(data=request.data)
 
         if serializer.is_valid():
-            job = create_job_seeker(serializer.validated_data)
-            serializer = ReadJobSeekerSerializer(job)
+            job_seeker = create_job_seeker(serializer.validated_data)
+            serializer = CreateJobSeekerSerializer(job_seeker)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
