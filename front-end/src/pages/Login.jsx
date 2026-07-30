@@ -24,6 +24,13 @@ function Login() {
       } else {
         navigate("/");
       }
+      // if (loggedInUser.role === "EM") {
+      //   window.location.href = "/employer/homepage";
+      // } else if (loggedInUser.role === "JS") {
+      //   window.location.href = "/";
+      // } else {
+      //   navigate("/");
+      // }
     } catch (err) {
       if (err.detail) {
         setError(err.detail);

@@ -115,7 +115,7 @@ export async function SendResumeToEmployer(payload, id) {
 }
 export async function UploadPhotoJobSeeker(payload) {
   const response = await authFetch(`${API_URL}api/job-seeker/upload/photo/`, {
-    method: "PATCH",
+    method: "PUT",
     body: payload,
   });
 
