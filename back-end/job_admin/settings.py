@@ -177,8 +177,10 @@ STORAGES = {
     },
 }
 
+# Needed because django-cloudinary-storage's collectstatic command
+# still checks the legacy STATICFILES_STORAGE attribute directly.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+WHITENOISE_MANIFEST_STRICT = False
 # STORAGES = {
 #     "default": {
 #         "BACKEND": "django.core.files.storage.FileSystemStorage",
