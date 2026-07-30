@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class User(AbstractUser):
     class Role(models.TextChoices):
+        ADMIN = "AD", "Admin"
         EMPLOYER  = "EM", "Employer"
         JOBSEEKER = "JS", "Job-Seeker"
     
@@ -11,7 +12,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["-id"]
     def __str__(self):
         return f"{self.username}"
 
@@ -22,34 +23,28 @@ class JobSeeker(models.Model):
     about = models.TextField(blank=True)
     phone_number = models.CharField(max_length=11, blank=True)
     portfolio_url = models.URLField(blank=True)
-    resume = models.FileField(upload_to="resumes/", blank=True)
-    photo = models.ImageField(upload_to='photos/', blank=True)
+    resume = models.FileField(upload_to="resumes/",storage=RawMediaCloudinaryStorage, blank=True)
+    photo = models.ImageField(upload_to='photos/',null=True, blank=True)
 
     def save(self, *args, **kwargs):
-     
         try:
             old = JobSeeker.objects.get(pk=self.pk)
-         
-            if old.resume and old.resume != self.resume:
-                old.resume.delete(save=False) 
-            
             if old.photo and old.photo != self.photo:
                 old.photo.delete(save=False)
+            if old.resume and old.resume != self.resume:
+                old.resume.delete(save=False)
         except JobSeeker.DoesNotExist:
-            pass 
-
+            pass
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        
-        if self.resume:
-            self.resume.delete(save=False)
-
         if self.photo:
             self.photo.delete(save=False)
+        if self.resume:
+            self.resume.delete(save=False)
         super().delete(*args, **kwargs)
+    
  
-
 
     def __str__(self):
         return f"JobSeeker: {self.user.username}"
@@ -62,16 +57,26 @@ class WorkExperience(models.Model):
     end_date = models.DateField(null=True, blank=True)
     description = models.TextField(blank=False)
 
+    def __str__(self):
+        return f"{self.title} at {self.company}"
+
 class Education(models.Model):
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='educations')
     degree = models.CharField(max_length=255, blank=False)
     school = models.CharField(max_length=255, blank=False)
     start_year = models.IntegerField(null=False, blank=False)
     end_year = models.IntegerField(null=False, blank= False)
+
+    def __str__(self):
+        return f"{self.degree} at {self.school}"
     
 class Skill(models.Model):
     job_seeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='skills')
     name = models.CharField(max_length=255, blank=False)
+
+    def __str__(self):
+            return f"{self.name}"
+    
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company = models.CharField(max_length=255, blank=True)
@@ -84,23 +89,19 @@ class Employer(models.Model):
     photo = models.ImageField(upload_to='photos/',null=True, blank=True)
 
     def save(self, *args, **kwargs):
-     
         try:
             old = Employer.objects.get(pk=self.pk)
-                   
             if old.photo and old.photo != self.photo:
                 old.photo.delete(save=False)
+                
         except Employer.DoesNotExist:
-            pass 
-
+            pass
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-
         if self.photo:
             self.photo.delete(save=False)
+       
         super().delete(*args, **kwargs)
-    
-
     def __str__(self):
         return f"{self.user.username}"

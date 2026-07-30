@@ -18,6 +18,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Cloudinary Import
+import cloudinary
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -34,6 +38,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +50,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'account',
     'jobs',
+
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -142,8 +149,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+MEDIA_URL = "/media/"
+STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 AUTH_USER_MODEL = "account.User"
 
@@ -158,14 +168,25 @@ REST_FRAMEWORK = {
     ),
 
 }
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "django.core.files.storage.FileSystemStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -190,5 +211,13 @@ SIMPLE_JWT = {
     
     "ROTATE_REFRESH_TOKENS": True,  
 
+}
+
+# Cloudinary Config
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME' : config('CLOUD_NAME'),
+    'API_KEY' : config('API_KEY'),
+    'API_SECRET' : config('API_SECRET'),
 }
 
