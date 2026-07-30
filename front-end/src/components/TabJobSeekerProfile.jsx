@@ -47,6 +47,7 @@ export function ProfileTab({ loading, MyProfile, setMyProfile }) {
     first_name: MyProfile?.user.first_name || "",
     last_name: MyProfile?.user.last_name || "",
     job_title: MyProfile?.job_title || "",
+    photo: MyProfile?.photo || "",
   });
 
   const [error, setError] = useState("");
