@@ -2,7 +2,7 @@ import { authFetch } from "./authService";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function MyProfile() {
-  const response = await authFetch(`${API_URL}employer/me/`, {
+  const response = await authFetch(`${API_URL}api/employer/me/`, {
     method: "GET",
   });
 
