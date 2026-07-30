@@ -151,7 +151,10 @@ USE_TZ = True
 
 MEDIA_URL = "/media/"
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+WHITENOISE_MANIFEST_STRICT = False
 
 
 AUTH_USER_MODEL = "account.User"
@@ -177,10 +180,7 @@ STORAGES = {
     },
 }
 
-# Needed because django-cloudinary-storage's collectstatic command
-# still checks the legacy STATICFILES_STORAGE attribute directly.
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+
 # STORAGES = {
 #     "default": {
 #         "BACKEND": "django.core.files.storage.FileSystemStorage",
