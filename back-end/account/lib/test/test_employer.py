@@ -25,7 +25,7 @@ class TestEmployer(APITestCase):
             industry = "test industry",
             company_size = "test company size",
             description = "test description",
-            phone_number = "test number",
+            phone_number = "09475846135",
             website_url="http://test.com",
             location = "test location",
 
@@ -34,7 +34,7 @@ class TestEmployer(APITestCase):
         self.employer.save()
 
         self.client.force_authenticate(user=self.user)
-        self.register_url = reverse('register-user')
+        self.register_url = reverse('register-employer')
         self.employer_profile_url = reverse('get-employer-profile')
         self.update_employer_url = reverse('update-employer')
         self.upload_photo_url = reverse('upload-employer-photo')
@@ -58,19 +58,17 @@ class TestEmployer(APITestCase):
         self.assertEqual(response.data['company'], self.employer.company)
 
     
-    def test_update_employer(self):
+    def test_update_employer_company_profile(self):
         data = {
-            "user": {
-                "username": "fake_username"
-            },
-            "company": "new company"
+            "company": "new company",
+            "industry": "new indsutry",
+            "company_size": "12",
+            "description": "new description"
         }
 
-        response = self.client.patch(self.update_employer_url, data, format='json')
+        response = self.client.put(self.update_employer_url, data, format='json')
         self.user.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.user.username , "fake_username")
-        self.assertEqual(response.data['user']['username'] , "fake_username")
         self.assertEqual(response.data['company'] , "new company")
     
 

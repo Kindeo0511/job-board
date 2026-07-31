@@ -137,7 +137,7 @@ class TestJobSeeker(APITestCase):
             "resume": self.test_resume
         }
         
-        response = self.client.patch(self.upload_resume_url, data, format='multipart')
+        response = self.client.put(self.upload_resume_url, data, format='multipart')
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(response.data['resume'])
@@ -147,7 +147,7 @@ class TestJobSeeker(APITestCase):
             "resume": self.invalid_resume
         }
         
-        response = self.client.patch(self.upload_resume_url, data, format='multipart')
+        response = self.client.put(self.upload_resume_url, data, format='multipart')
         
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
      

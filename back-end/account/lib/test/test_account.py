@@ -40,7 +40,7 @@ class TestRegisterAccount(APITestCase):
             job_title = "test company",
             location = "test industry",
             about = "test company size",
-            phone_number = "test description",
+            phone_number = "09123456781",
             portfolio_url="http://test.com"
         )
 
@@ -52,7 +52,7 @@ class TestRegisterAccount(APITestCase):
             "password":"",
             "role":""
         }
-        self.register_url = reverse('register-user')
+  
         self.register_employer_url = reverse('register-employer')
         self.register_jobseeker_url = reverse('register-jobseeker')
         self.update_account_url = reverse('update-account')
@@ -104,7 +104,7 @@ class TestRegisterAccount(APITestCase):
             "role":"EM"
         }
 
-        response = self.client.post(self.register_url, data, format='json')
+        response = self.client.post(self.register_employer_url, data, format='json')
         self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST) 
 
     def test_duplicate_jobseeker_account(self):
@@ -115,18 +115,18 @@ class TestRegisterAccount(APITestCase):
             "role":"JS"
         }
 
-        response = self.client.post(self.register_url, data, format='json')
+        response = self.client.post(self.register_jobseeker_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
        
     
     def test_register_empty_field(self):
         
-        response = self.client.post(self.register_url, self.empty_data, format='json')
+        response = self.client.post(self.register_employer_url, self.empty_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_register_blank_field(self):
         
-        response = self.client.post(self.register_url, self.blank_data, format='json')
+        response = self.client.post(self.register_employer_url, self.blank_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_employer_account(self):
@@ -162,7 +162,7 @@ class TestRegisterAccount(APITestCase):
             "password":"test_password"
         }
 
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), "Change Password Success")
     
@@ -172,7 +172,7 @@ class TestRegisterAccount(APITestCase):
             "password":"test_password"
         }
 
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), "Change Password Success")
     
@@ -180,7 +180,7 @@ class TestRegisterAccount(APITestCase):
         self.client.force_authenticate(user=self.jobseeker_user)
         data = {}
 
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_jobseeker_change_password_blank_field(self):
@@ -189,14 +189,14 @@ class TestRegisterAccount(APITestCase):
             "password":""
         }
         
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_employer_change_password_missing_field(self):
         self.client.force_authenticate(user=self.employer_user)
         data = {}
 
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_employer_change_password_blank_field(self):
@@ -205,7 +205,7 @@ class TestRegisterAccount(APITestCase):
             "password":""
         }
         
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_change_password_authentication(self):
@@ -213,7 +213,7 @@ class TestRegisterAccount(APITestCase):
             "password":"change_password"
         }
         
-        response = self.client.patch(self.change_password_url, data, format='json')
+        response = self.client.put(self.change_password_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 

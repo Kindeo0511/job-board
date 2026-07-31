@@ -29,7 +29,7 @@ class TestWorkExperience(APITestCase):
             job_title = "test_title",
             location ="test_location",
             about = "test_location",
-            phone_number = "test_number",
+            phone_number = "09123456789",
             portfolio_url = "https://test.com",
         )
         self.jobseeker.save()
@@ -39,7 +39,7 @@ class TestWorkExperience(APITestCase):
         job_title="other_title",
         location="other_location",
         about="other_about",
-        phone_number="other_number",
+        phone_number="09123456789",
         portfolio_url="https://other.com",
         )
         self.other_job_seeker.save()

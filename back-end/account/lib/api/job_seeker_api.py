@@ -6,7 +6,7 @@ from account.models import Employer
 from account.lib.serializer.account_serializer import *
 from account.lib.services.job_seeker_service import *
 from rest_framework.permissions import IsAuthenticated
-from account.permission import IsJobSeeker, IsJobSeekerOwner, IsWorkExperienceOwner, IsEducationOwner
+from account.permission import IsJobSeeker, IsJobSeekerOwner, IsWorkExperienceOwner, IsEducationOwner, IsSkillOwner
 
 class CreateJobSeekerView(APIView):
     
@@ -283,7 +283,7 @@ class DeleteEducationView(APIView):
     
 # SKILL API VIEW
 class CreateSkillView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsJobSeeker]
     def post(self, request: Request) -> Response:
     
         job_seeker = get_job_seeker_by_user(request.user)
@@ -296,9 +296,13 @@ class CreateSkillView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateSkillView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsJobSeeker, IsSkillOwner]
     def put(self, request, pk:int) -> Response:
-        old_data = get_skill_by_id(pk)
+        try:
+            old_data = get_skill_by_id(pk)
+        except Skill.DoesNotExist:
+            return Response({"error":"Skill not found."}, status=status.HTTP_404_NOT_FOUND)
+        self.check_object_permissions(request, data)
         job_seeker = get_job_seeker_by_user(request.user)
         serializer = SkillSerializer(data=request.data,
                                       context={'job_seeker':job_seeker,
@@ -311,14 +315,16 @@ class UpdateSkillView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteSkillView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsJobSeeker, IsSkillOwner ]
     def delete(self, request, pk:int) ->Response:
         try:
             data = get_skill_by_id(pk)
-            delete_skill(data)
-            return Response(status=status.HTTP_204_NO_CONTENT)
         except Skill.DoesNotExist:
             return Response({"error":"Skill not found."}, status=status.HTTP_404_NOT_FOUND)
+        self.check_object_permissions(request, data)
+        delete_skill(data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+       
        
 
 

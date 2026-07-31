@@ -37,6 +37,7 @@ class TestJob(APITestCase):
 
         )
         self.employer.save()
+
         self.job = Job.objects.create(
             employer = self.employer,
             title = "test_title",
@@ -46,6 +47,18 @@ class TestJob(APITestCase):
             max_exp = 2,
             job_type = "full-time",
             location = "test_location"
+        )
+
+
+        self.other_job = Job.objects.create(
+            employer = self.employer,
+            title = "other_title",
+            salary_min = 1000,
+            salary_max = 2000,
+            min_exp = 1,
+            max_exp = 2,
+            job_type = "full-time",
+            location = "other_location"
         )
 
         self.qualification = Qualification.objects.create(
@@ -93,14 +106,14 @@ class TestJob(APITestCase):
         # Job Application URL
         self.get_all_applicants_url = reverse('get-employer-applicants')
         self.get_applicant_url = reverse('get-employer-applicant', kwargs={'pk':self.job_application.id})
-        self.apply_job_url = reverse('apply-job',kwargs={'job_id':self.job.id})
+        self.apply_job_url = reverse('apply-job',kwargs={'job_id':self.other_job.id})
         self.applicant_job_application_url = reverse('get-my-job-application')
         self.update_applicant_status_url = reverse('update-job-application',kwargs={'pk':self.job_application.id})
     
     def test_get_all_job(self):
         response = self.client.get(self.get_all_job_url,format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Job.objects.count(),1)
+        self.assertEqual(Job.objects.count(),2)
     
     def test_get_all_job_by_employer_unauthorized(self):
         self.client.force_authenticate(user=None)
@@ -133,7 +146,7 @@ class TestJob(APITestCase):
         response = self.client.post(self.create_job_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Job.objects.count(), 2)
+        self.assertEqual(Job.objects.count(), 3)
 
         new_job = Job.objects.get(title='New_Title')
         self.assertEqual(new_job.employer, self.employer)
@@ -229,7 +242,7 @@ class TestJob(APITestCase):
         response = self.client.put(self.update_job_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Job.objects.count(), 1)
+        self.assertEqual(Job.objects.count(), 2)
 
         updated_job = Job.objects.get(title='Updated_Title')
         self.assertTrue(Qualification.objects.filter(job=updated_job, text='updated qualification').exists())
@@ -328,7 +341,7 @@ class TestJob(APITestCase):
 
         response = self.client.get(self.get_applicant_url,format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['id'], 1)
+        self.assertEqual(response.data['applicant']['user']['username'], self.applicant_data.user.username)
         self.assertEqual(response.data['status'], 'pending')
 
     def test_get_applicant_unauthorized(self):
@@ -355,7 +368,9 @@ class TestJob(APITestCase):
     def test_apply_applicant(self):
         self.client.force_authenticate(user=self.applicant)
         response = self.client.post(self.apply_job_url,format='json')
+        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    
 
     def test_apply_applicant_unauthorized(self):
         self.client.force_authenticate(user=None)
