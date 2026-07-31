@@ -99,17 +99,17 @@ DATABASES = {
     # }
 
 
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': config('DATABASE_NAME'),
-    #     'USER': config('DATABASE_USER'),
-    #     'PASSWORD': config('DATABASE_PASSWORD'),
-    #     'HOST': config('DATABASE_HOST'),
-    #     'PORT': config('DATABASE_PORT'),
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
+        'HOST': config('DATABASE_HOST'),
+        'PORT': config('DATABASE_PORT'),
+    }
 
     #Product Database
-    'default': dj_database_url.parse(config('DATABASE_URL'))
+    # 'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
 
@@ -151,7 +151,6 @@ USE_TZ = True
 
 MEDIA_URL = "/media/"
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 WHITENOISE_MANIFEST_STRICT = False

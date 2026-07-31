@@ -106,7 +106,7 @@ class TestSkill(APITestCase):
 
     def test_delete_skill_wrong_owner(self):
         self.client.force_authenticate(user=self.other_job_seeker)
-        response = self.client.post(self.delete_skill_url, format='json')
+        response = self.client.delete(self.delete_skill_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
      
         

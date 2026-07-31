@@ -33,3 +33,7 @@ class IsWorkExperienceOwner(BasePermission):
 class IsEducationOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.job_seeker.user == request.user
+
+class IsSkillOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.job_seeker.user == request.user

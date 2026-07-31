@@ -31,10 +31,20 @@ class TestEducation(APITestCase):
             job_title = "test_title",
             location ="test_location",
             about = "test_location",
-            phone_number = "test_number",
+            phone_number = "09374917011",
             portfolio_url = "https://test.com",
         )
         self.jobseeker.save()
+
+        self.other_jobseeker = JobSeeker.objects.create(
+            user=self.other_job_seeker_user,
+            job_title="other_title",
+            location="other_location",
+            about="other_about",
+            phone_number="09474839471",
+            portfolio_url="https://other.com",
+        )
+        self.other_jobseeker.save()
 
         self.education = Education.objects.create(
             job_seeker = self.jobseeker,
@@ -148,7 +158,7 @@ class TestEducation(APITestCase):
             "end_year": 2026
         }
         response = self.client.post(self.add_education_url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_add_education_wrong_role(self):
         self.client.force_authenticate(user=self.other_role)
