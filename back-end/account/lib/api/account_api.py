@@ -42,6 +42,7 @@ class RegisterJobSeekerView(APIView):
 
 
 class GetRoleAccountView(APIView):
+   
     permission_classes = [IsAuthenticated]
     def get(self, request: Request) -> Response:
 

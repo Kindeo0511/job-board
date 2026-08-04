@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'account',
     'jobs',
-
+    'drf_spectacular',
     'cloudinary',
 ]
 
@@ -167,6 +167,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
 
@@ -220,5 +221,13 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME' : config('CLOUD_NAME'),
     'API_KEY' : config('API_KEY'),
     'API_SECRET' : config('API_SECRET'),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Job Board ',
+    'DESCRIPTION': '',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
