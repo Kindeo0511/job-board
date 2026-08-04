@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'account',
     'jobs',
-
+    'drf_spectacular',
     'cloudinary',
 ]
 
@@ -99,17 +99,17 @@ DATABASES = {
     # }
 
 
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': config('DATABASE_NAME'),
+    #     'USER': config('DATABASE_USER'),
+    #     'PASSWORD': config('DATABASE_PASSWORD'),
+    #     'HOST': config('DATABASE_HOST'),
+    #     'PORT': config('DATABASE_PORT'),
+    # }
 
     #Product Database
-    # 'default': dj_database_url.parse(config('DATABASE_URL'))
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
 
@@ -167,6 +167,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
 
@@ -220,5 +221,13 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME' : config('CLOUD_NAME'),
     'API_KEY' : config('API_KEY'),
     'API_SECRET' : config('API_SECRET'),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Job Board ',
+    'DESCRIPTION': '',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
