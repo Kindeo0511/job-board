@@ -23,10 +23,8 @@ A full-stack job board where companies can post openings and job seekers can sea
 - **Frontend:** Tailwind CSS, DaisyUI
 - **Email:** SMTP
 - **Hosting:** Backend on Render, Frontend on Vercel
-- **Hunicorn:** WSGI server (production)
+- **Gunicorn:** WSGI server (production)
 
-
-## Getting Started
 
 ### Prerequisites
 
